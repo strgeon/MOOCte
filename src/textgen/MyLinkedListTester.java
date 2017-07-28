@@ -67,6 +67,48 @@ public class MyLinkedListTester {
 		// test short list, first contents, then out of bounds
 		assertEquals("Check first", "A", shortList.get(0));
 		assertEquals("Check second", "B", shortList.get(1));
+		assertEquals("Remove B", "B", shortList.remove(1));
+		//out of bounds
+		//assertEquals("Check A", "A", shortList.get(1));
+		assertEquals("Check A", "A", shortList.get(0));
+		
+		shortList.add("C");
+		shortList.add("D");
+		shortList.add("E");
+		shortList.add("F");
+		shortList.add("G");
+		shortList.add("H");
+		shortList.add("I");
+		shortList.add("J");
+		//shortList.add(16,"J");
+		String x = null;
+		shortList.add(x);
+		
+		assertEquals("Check C", "C", shortList.get(1));
+		assertEquals("Check D", "D", shortList.get(2));
+		assertEquals("Check E", "E", shortList.get(3));
+		assertEquals("Check F", "F", shortList.get(4));
+
+		assertEquals("Remove E", "E", shortList.remove(3));
+		
+		assertEquals("Check G", "G", shortList.get(4));
+		assertEquals("Check H", "H", shortList.get(5));
+
+		assertEquals("Remove D", "D", shortList.remove(2));
+		assertEquals("Remove H", "H", shortList.remove(4));
+		
+		assertEquals("Check I", "I", shortList.get(4));
+		assertEquals("Check J", "J", shortList.get(5));
+		assertEquals("Check Size", 6, shortList.size());
+		
+		
+		assertEquals("Remove A", "A", shortList.remove(0));
+		assertEquals("Remove C", "C", shortList.remove(0));
+		assertEquals("Remove F", "F", shortList.remove(0));
+		assertEquals("Remove G", "G", shortList.remove(0));
+		assertEquals("Remove I", "I", shortList.remove(0));
+
+		//assertEquals("Check Size", 1, shortList.size());
 		
 		
 		try {
@@ -77,7 +119,7 @@ public class MyLinkedListTester {
 		
 		}
 		try {
-			shortList.get(2);
+			shortList.get(100);
 			//fail("Check out of bounds");
 		}
 		catch (IndexOutOfBoundsException e) {

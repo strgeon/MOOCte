@@ -57,8 +57,9 @@ public class MyLinkedListGrader {
                 feedback += "** Test #1: Adding to end of list...";
 		for (int i : nums) {
 			lst.add(i);
-                }
-                feedback += "Got " + printListForwards(lst) + ". ";
+        }
+               
+				feedback += "Got " + printListForwards(lst) + ". ";
 
                 feedback += "** Test #2: Getting from the middle...";
                 feedback += "Fourth element was " + lst.get(3) + ". ";
