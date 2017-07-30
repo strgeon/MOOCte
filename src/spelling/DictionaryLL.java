@@ -2,6 +2,9 @@ package spelling;
 
 import java.util.LinkedList;
 
+//import textgen.LLNode;
+//import textgen.ListNode;
+
 /**
  * A class that implements the Dictionary interface using a LinkedList
  *
@@ -10,7 +13,13 @@ public class DictionaryLL implements Dictionary
 {
 
 	private LinkedList<String> dict;
+	private int size;
 	
+	public DictionaryLL() {
+
+		dict = new LinkedList<String>();
+		size = 0;
+	}
     // TODO: Add a constructor
 
 
@@ -21,7 +30,12 @@ public class DictionaryLL implements Dictionary
      * (it wasn't already there). */
     public boolean addWord(String word) {
     	// TODO: Implement this method
-        return false;
+    	if (!dict.contains(word.toLowerCase())) {
+    		dict.add(word.toLowerCase());
+    		++size;
+    		//System.out.println("adding "+word);
+    	}
+        return true;
     }
 
 
@@ -29,14 +43,17 @@ public class DictionaryLL implements Dictionary
     public int size()
     {
         // TODO: Implement this method
-        return 0;
+        return size;
     }
 
     /** Is this a word according to this dictionary? */
     public boolean isWord(String s) {
         //TODO: Implement this method
-        return false;
+
+    	return dict.contains(s.toLowerCase());
+
     }
+    
 
     
 }
