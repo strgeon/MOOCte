@@ -189,7 +189,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	}   
 }
 
-/*
+
 class LLNode<E> 
 {
 	LLNode<E> prev;
@@ -214,4 +214,3 @@ class LLNode<E>
 	}
 
 }
-*/
