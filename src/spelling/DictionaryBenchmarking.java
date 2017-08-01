@@ -29,7 +29,7 @@ public class DictionaryBenchmarking {
 		
 		// The number of words to start with. 
 		// You can play around with this.
-		int start = 50000;
+		int start = 10000;
 		
 		String notInDictionary = "notaword";
 		
@@ -49,14 +49,14 @@ public class DictionaryBenchmarking {
 				llDict.isWord(notInDictionary);
 			}
 			long endTime = System.nanoTime();
-			long timeLL = (endTime - startTime);  
+			long timeLL = (endTime - startTime)/10000;  
 			
 			startTime = System.nanoTime();
 			for (int i = 0; i < trials; i++) {
 				bstDict.isWord(notInDictionary);
 			}
 			endTime = System.nanoTime();
-			long timeBST = (endTime - startTime);
+			long timeBST = (endTime - startTime)/10000;
 			
 			System.out.println(numToCheck + "\t" + timeLL + "\t" + timeBST);
 			

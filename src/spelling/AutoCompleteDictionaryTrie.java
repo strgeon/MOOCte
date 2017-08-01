@@ -1,7 +1,9 @@
 package spelling;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -20,6 +22,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     public AutoCompleteDictionaryTrie()
 	{
 		root = new TrieNode();
+		size = 0;
 	}
 	
 	
@@ -40,7 +43,40 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean addWord(String word)
 	{
 	    //TODO: Implement this method.
-	    return false;
+		TrieNode curr = root;
+		TrieNode child;
+		boolean added = false;
+		
+		String lword = word.toLowerCase();
+		char [] chars = lword.toCharArray();
+		
+    	for (char c : chars) {
+    		child = curr.getChild(c);
+    		if (child == null) {
+    			child = curr.insert(c);
+    			if (child == null) {
+    				// should not happen, getChild will be null if it doesn't exist, and insert will only return a null if it DOES exist
+    				//System.out.println("there was a problem with inserting a child");
+    				return false;
+    			}
+    		}
+    		
+    		curr = child;		
+    	}
+    	
+    	if (lword.equals(curr.getText())) {
+    		if (curr.endsWord()) {
+    			return false;
+    		}
+    		else {
+    			added = true;
+    			curr.setEndsWord(true);
+    			++size;
+    		}
+    	}
+    	//System.out.println("text = "+curr.getText()+", word = "+lword+", added = "+added);
+      			
+    	return added;
 	}
 	
 	/** 
@@ -50,7 +86,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public int size()
 	{
 	    //TODO: Implement this method
-	    return 0;
+	    return size;
 	}
 	
 	
@@ -59,8 +95,32 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	@Override
 	public boolean isWord(String s) 
 	{
-	    // TODO: Implement this method
-		return false;
+		if (s.length() == 0) {
+			return false;
+		}
+		TrieNode curr = root;
+		TrieNode child;
+		String lword = s.toLowerCase();
+		char [] chars = lword.toCharArray();
+		
+    	for (char c : chars) {
+    		child = curr.getChild(c);
+    		if (child == null) {
+    			return false;
+    		}  		
+    		curr = child;		
+    	}
+		if (curr.endsWord() && lword.equals(curr.getText())) {
+	  		return true;
+		}
+		else {
+			//shouldn't happen
+			//System.out.println("text = "+curr.getText()+", word = "+lword);
+			//System.out.println("there was a problem with isWord");
+			//printNode(curr);
+			return false;
+		}
+		
 	}
 
 	/** 
@@ -101,8 +161,65 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     	 //       Add all of its child nodes to the back of the queue
     	 // Return the list of completions
     	 
-         return null;
-     }
+    	
+ 		TrieNode curr = root;
+ 		TrieNode child;
+ 		TrieNode tn;
+ 		String lword = prefix.toLowerCase();
+ 		char [] chars = lword.toCharArray();
+ 		Queue<TrieNode> queue = new LinkedList<TrieNode>();
+ 		ArrayList<String> compl = new ArrayList<String>();
+
+ 		//System.out.println("string = "+lword+", numCompletions = "+numCompletions);
+ 		if (numCompletions == 0) {
+    		return compl;
+ 		}
+
+    	for (char c : chars) {
+    		child = curr.getChild(c);
+    		if (child != null) {
+    			curr = child;		
+    		}
+    		else {
+    			return compl;
+    		}
+    	}
+    	queue.add(curr);
+    	
+    	int i = 0;
+    	if (curr.endsWord()) {
+			compl.add(curr.getText());
+			i++;
+			//System.out.println("first text added = "+curr.getText());
+		}
+		
+		//System.out.println("starting at "+curr.getText()+", endsword = "+curr.endsWord());
+    	
+    	
+    	
+    	while (queue.size() > 0) {
+    		curr = queue.poll();
+    		//System.out.println("queue postion "+curr.getText()+", endsword = "+curr.endsWord());
+    		for (Character c : curr.getValidNextCharacters()) {
+    			child = curr.getChild(c);
+    			if (child != null) {
+    				queue.add(child);
+    				if (child.endsWord()) {
+    					if (i<numCompletions) {
+    						compl.add(child.getText());
+    						i++;
+    						//System.out.println("text added = "+child.getText());
+    					}
+    					else {
+    						return compl;
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+    	return compl;
+    }
 
  	// For debugging
  	public void printTree()
